@@ -372,6 +372,47 @@ Critical Rendering Path (CRP, Критический путь рендеринг
   - Управление через `skipWaiting()` и `clients.claim()`
   - Версионирование кешей для безопасного обновления
 
+#### Service Workers: краткое резюме для собеседования
+
+**Определение**: Service Worker — это JavaScript-скрипт, работающий в фоновом режиме браузера, отдельно от веб-страницы, позволяющий реализовать функции, не требующие взаимодействия с пользователем.
+
+**Ключевые характеристики**:
+
+- Работает в отдельном потоке от основного JavaScript
+- Не имеет доступа к DOM напрямую
+- Программируется на событийной модели
+- Может перехватывать сетевые запросы (через событие fetch)
+- Продолжает работу даже при закрытии вкладки
+- Требует HTTPS (кроме localhost)
+
+**Жизненный цикл**:
+
+1. **Регистрация** — информирование браузера о Service Worker
+2. **Установка** — подготовительный этап, кеширование ресурсов
+3. **Активация** — получение контроля над клиентами
+4. **Перехват запросов** — обработка сетевых запросов через fetch-событие
+
+**Применение**:
+
+- Оффлайн-функциональность
+- Кеширование ресурсов для улучшения производительности
+- Фоновая синхронизация данных
+- Push-уведомления
+- Основа для Progressive Web Apps
+
+**Преимущества**:
+
+- Улучшение производительности за счет кеширования
+- Возможность работы при отсутствии сети
+- Улучшение пользовательского опыта
+- Уменьшение нагрузки на сервер
+
+**Ограничения**:
+
+- Не работает в режиме инкогнито
+- Ограничения по хранилищу зависят от браузера
+- Не поддерживается в старых браузерах
+
 ### Web App Manifest
 
 - **Определение**: JSON-файл, предоставляющий информацию о веб-приложении для установки
@@ -420,6 +461,44 @@ Critical Rendering Path (CRP, Критический путь рендеринг
   <meta name="theme-color" content="#2196f3" />
   <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png" />
   ```
+
+#### Web App Manifest: краткое резюме для собеседования
+
+**Определение**: Web App Manifest — это JSON-файл, который предоставляет информацию о веб-приложении в формате, понятном для операционной системы устройства и браузера.
+
+**Ключевые аспекты**:
+
+- Основной элемент PWA для установки на домашний экран
+- Определяет внешний вид приложения при запуске с домашнего экрана
+- Указывает иконки, цвета, ориентацию и режим отображения
+
+**Важные свойства**:
+
+- `name` и `short_name` — полное и сокращенное названия приложения
+- `icons` — набор иконок разных размеров
+- `start_url` — начальная страница при запуске
+- `display` — режим отображения (fullscreen, standalone, minimal-ui, browser)
+- `theme_color` — основной цвет приложения для UI браузера
+- `background_color` — цвет фона загрузочного экрана
+
+**Использование**:
+
+- Подключается через тег `<link>` в HTML
+- Проверяется и работает с Service Worker для полной PWA-функциональности
+- Может использоваться для "Add to Home Screen" (A2HS) даже без Service Worker
+
+**Преимущества**:
+
+- Позволяет добавлять приложение на домашний экран устройства
+- Улучшает пользовательский опыт (нативоподобный интерфейс)
+- Повышает вовлеченность пользователей
+- Улучшает SEO (Google учитывает PWA-готовность)
+
+**Поддержка браузеров**:
+
+- Chrome, Edge, Firefox, Opera на Android
+- Safari на iOS (с ограничениями)
+- На десктопах: Chrome, Edge, Opera
 
 ### App Shell модель
 
@@ -915,7 +994,7 @@ Critical Rendering Path (CRP, Критический путь рендеринг
 ### Опишите методы оптимизации загрузки веб-страницы
 
 - **Оптимизация ресурсов**:
-  - **Минификация** CSS, JavaScript, HTML-файлов
+  - **Минификация** CSS, JavaScript, HTML-файлов - минификация - это процесс направлений на уменьшения размеров исходного кода путем удаления ненужных символов без изменения его функциональности, она уменьшает объем данных которые должны быть обработаны
   - **Сжатие изображений** и использование форматов WebP, AVIF
   - **Адаптивные изображения** с помощью `srcset` и `sizes`
   - **Шрифты**: оптимизация, подгрузка только нужных наборов символов
@@ -1053,41 +1132,92 @@ Critical Rendering Path (CRP, Критический путь рендеринг
    - Загрузка ресурсов по требованию (lazy loading)
    - Предварительная загрузка ресурсов для ускорения навигации (prefetching)
 
+#### Основные транспортные протоколы
+
+**TCP (Transmission Control Protocol)**:
+
+- **Определение**: Надежный, ориентированный на соединение протокол транспортного уровня, гарантирующий доставку пакетов данных в указанной последовательности.
+- **Характеристики**:
+  - Устанавливает соединение через трехэтапное рукопожатие (SYN, SYN-ACK, ACK)
+  - Проверяет доставку данных и запрашивает повторную передачу при потере пакетов
+  - Включает механизмы контроля перегрузки и управления потоком
+  - Гарантирует целостность и упорядоченность доставки данных
+- **Применение**: Используется в HTTP/1.1 и HTTP/2, где важна надежность передачи данных
+
+**UDP (User Datagram Protocol)**:
+
+- **Определение**: Простой протокол транспортного уровня без установления соединения, передающий датаграммы без гарантии доставки и сохранения порядка.
+- **Характеристики**:
+  - Не устанавливает соединение перед передачей данных
+  - Не отслеживает состояние соединения
+  - Не гарантирует доставку или порядок пакетов
+  - Минимальные накладные расходы (меньший размер заголовка)
+  - Отсутствие задержек на подтверждение получения
+- **Применение**: Потоковое видео, онлайн-игры, VoIP, где скорость важнее надежности
+
+**QUIC (Quick UDP Internet Connections)**:
+
+- **Определение**: Транспортный протокол, разработанный Google, реализующий надежную передачу поверх UDP с мультиплексированием потоков и встроенным шифрованием.
+- **Характеристики**:
+  - Сочетает надежность TCP с низкими задержками UDP
+  - Реализует уникальные идентификаторы соединений вместо IP-адресов/портов
+  - Обеспечивает независимую обработку потоков данных
+  - Встраивает криптографический протокол TLS 1.3
+  - Устраняет блокировку head-of-line на транспортном уровне
+  - Поддерживает миграцию соединения при смене сети
+- **Применение**: Используется в HTTP/3 для повышения производительности, особенно в мобильных и нестабильных сетях
+
 ### Разница между HTTP/1.1, HTTP/2 и HTTP/3
 
-#### HTTP/1.1
+#### HTTP-протоколы
 
-- **Текстовый протокол** с человекочитаемыми заголовками
-- **Проблема блокировки head-of-line** (HOL): запросы обрабатываются последовательно
-- **Ограничение на количество соединений** к одному домену (обычно 6-8)
-- **Оптимизации**:
-  - Постоянные соединения (keep-alive)
-  - Сжатие заголовков (но неэффективное)
-  - Поддержка частичной загрузки (range requests)
+**HTTP/1.1**:
 
-#### HTTP/2
+- **Определение**: Текстовый протокол прикладного уровня, используемый с 1999 года для передачи гипертекстовых документов.
+- **Ключевые характеристики**:
+  - Последовательная обработка запросов (блокировка head-of-line)
+  - Ограниченное количество соединений к домену (обычно 6-8)
+  - Текстовый формат заголовков с избыточностью
+  - Базовое сжатие заголовков
+  - Поддержка постоянных соединений (keep-alive)
+- **Недостатки**: Низкая эффективность при загрузке многих ресурсов, блокировка при потере пакетов
 
-- **Бинарный протокол** вместо текстового, более эффективный парсинг
-- **Мультиплексирование**: множество запросов/ответов через одно TCP-соединение
-- **Server Push**: сервер может отправлять ресурсы клиенту до их запроса
-- **Эффективное сжатие заголовков** (HPACK)
-- **Приоритизация потоков**: возможность указывать важность запросов
-- **Проблемы**:
-  - Все еще использует TCP, сохраняется проблема HOL на уровне транспорта
-  - Практически требует HTTPS (хотя формально возможен и поверх HTTP)
+**HTTP/2**:
 
-#### HTTP/3
+- **Определение**: Бинарный протокол прикладного уровня, стандартизированный в 2015 году для повышения производительности веб-приложений.
+- **Ключевые характеристики**:
+  - Бинарный формат для эффективного парсинга
+  - Мультиплексирование запросов в одном соединении
+  - Эффективное сжатие заголовков (HPACK)
+  - Приоритизация потоков данных
+  - Server Push для отправки ресурсов до запроса клиента
+- **Недостатки**: Сохраняется проблема блокировки head-of-line на уровне TCP
 
-- **Использует QUIC** вместо TCP (на базе UDP)
-- **Встроенное шифрование**: TLS 1.3 встроен в протокол
-- **Улучшенная производительность** для нестабильных соединений
-- **Независимая доставка потоков**: устраняет проблему HOL на транспортном уровне
-- **Быстрое установление соединения** (0-RTT или 1-RTT)
-- **Миграция соединений**: сохранение сессии при смене IP или сети
-- **Преимущества**:
-  - Меньшая задержка при установлении соединения
-  - Лучшая работа в мобильных сетях
-  - Устойчивость к потере пакетов
+**HTTP/3**:
+
+- **Определение**: Новейший протокол прикладного уровня, основанный на QUIC, стандартизированный в 2022 году.
+- **Ключевые характеристики**:
+  - Работа поверх QUIC вместо TCP
+  - Отсутствие блокировки head-of-line на транспортном уровне
+  - Улучшенное сжатие заголовков (QPACK)
+  - Быстрое установление и возобновление соединения (0-RTT)
+  - Встроенное шифрование TLS 1.3
+  - Миграция соединений между сетями
+- **Недостатки**: Ограниченная поддержка в некоторых сетевых устройствах и браузерах
+
+#### Сравнительная таблица:
+
+| Характеристика                  | HTTP/1.1    | HTTP/2                 | HTTP/3             |
+| ------------------------------- | ----------- | ---------------------- | ------------------ |
+| Транспорт                       | TCP         | TCP                    | QUIC (UDP)         |
+| Формат                          | Текстовый   | Бинарный               | Бинарный           |
+| Соединения                      | Много       | Одно                   | Одно               |
+| Мультиплексирование             | Нет         | Да                     | Да                 |
+| HOL Blocking                    | Сильный     | На уровне TCP          | Отсутствует        |
+| Сжатие заголовков               | Базовое     | HPACK                  | QPACK              |
+| Безопасность                    | Опционально | Фактически обязательно | Встроенное TLS 1.3 |
+| Скорость установки соединения   | Медленная   | Средняя                | Быстрая (0-RTT)    |
+| Работа на мобильных устройствах | Плохая      | Средняя                | Отличная           |
 
 ### Что такое CORS и как он работает?
 
@@ -1604,148 +1734,6 @@ Critical Rendering Path (CRP, Критический путь рендеринг
   - **SEO**: Оптимизация для поисковых систем
   - **Progressive Web App**: Готовность к работе как PWA
 
-### Техники отладки JavaScript
-
-- **Breakpoints и их типы**:
-
-  - **Line Breakpoints**: Остановка на определённой строке кода
-  - **Conditional Breakpoints**: `if (count > 5) { ... }`
-  - **DOM Breakpoints**: Остановка при изменении DOM
-  - **XHR Breakpoints**: Остановка при определённых сетевых запросах
-  - **Event Listener Breakpoints**: Остановка на обработчиках событий
-
-- **Управление выполнением**:
-
-  - **Continue**: Продолжение выполнения до следующего breakpoint
-  - **Step Over**: Выполнение текущей строки и переход к следующей
-  - **Step Into**: Переход внутрь функции
-  - **Step Out**: Выход из текущей функции
-  - **Deactivate Breakpoints**: Временное отключение всех breakpoints
-
-- **Продвинутые техники**:
-
-  - **debugger;**: Программная остановка выполнения
-  - **Логирование объектов**: `console.dir(object)` для интерактивного отображения
-  - **Мониторинг изменений**: `monitorEvents(element, ['click', 'focus'])` в консоли
-  - **Анализ функций**: `debug(functionName)` для автоматической остановки
-  - **Перезапись функций**: `window.fetch = function() { console.log('fetch called'); return originalFetch.apply(this, arguments); }`
-
-- **Отладка асинхронного кода**:
-  - **Async/Await Breakpoints**: Остановка на `await` выражениях
-  - **Promise Breakpoints**: Отладка цепочек промисов
-  - **Async Call Stack**: Просмотр полного стека вызовов для асинхронного кода
-  - **Blackboxing**: Игнорирование кода библиотек при отладке
-
-### Профилирование и оптимизация производительности
-
-- **Анализ производительности загрузки**:
-
-  - **Network Panel**: Анализ времени загрузки ресурсов
-  - **Coverage Tab**: Определение неиспользуемого JS и CSS
-  - **Memory Usage**: Анализ потребления памяти
-  - **Waterfall**: Выявление блокирующих ресурсов
-  - **Resource Hints**: Проверка preload, prefetch, dns-prefetch
-
-- **Профилирование JavaScript**:
-
-  - **Performance Recording**: Запись активности страницы
-  - **Bottom-Up**: Функции с наибольшим собственным временем выполнения
-  - **Call Tree**: Иерархическое представление вызовов функций
-  - **Event Log**: Хронологический список событий
-  - **Optimizations**: Выявление деоптимизаций JIT-компилятора
-
-- **Анализ рендеринга**:
-
-  - **Rendering Tab**: Визуализация перерисовок и layout
-  - **Layers Panel**: Анализ композитных слоёв
-  - **Paint Flashing**: Подсветка областей перерисовки
-  - **Layout Shift Regions**: Области CLS (Cumulative Layout Shift)
-  - **FPS Meter**: Отображение текущей частоты кадров
-
-- **Метрики Web Vitals**:
-  - **Lighthouse**: Всесторонний аудит метрик
-  - **Performance Tab**: Маркеры для LCP, FCP, DCL
-  - **Field Data**: Сбор реальных метрик от пользователей
-  - **Web Vitals Extension**: Расширение Chrome для оценки метрик
-  - **Performance.measure()**: Создание собственных меток для анализа
-
-### Мобильная отладка
-
-- **Remote Debugging**: Отладка на реальных устройствах
-
-  - **Android**: USB-отладка через Chrome
-  - **iOS**: Safari Web Inspector для отладки
-  - **Chrome DevTools Devices Mode**: Эмуляция мобильных устройств
-  - **Chrome Remote Debug**: `chrome://inspect/#devices`
-
-- **Особенности мобильной отладки**:
-
-  - **Touch Events**: Эмуляция сенсорных событий
-  - **Throttling**: Эмуляция мобильных сетей (2G, 3G, 4G)
-  - **Device Pixel Ratio**: Тестирование на различных плотностях экрана
-  - **Emulatе Sensors**: Эмуляция GPS, акселерометра и других датчиков
-
-- **Отладка PWA**:
-  - **Offline Mode**: Тестирование в режиме офлайн
-  - **Clear Storage**: Сброс данных для чистого тестирования
-  - **Service Worker Debugging**: Инспектирование и отладка Service Workers
-  - **Manifest Validation**: Проверка корректности manifest.json
-
-### Инструменты командной строки и расширения
-
-- **Browser Extensions for Debugging**:
-
-  - **React Developer Tools**: Инспектирование компонентов React
-  - **Redux DevTools**: Отладка состояния Redux
-  - **Vue.js DevTools**: Анализ приложений Vue.js
-  - **Apollo Client DevTools**: Отладка GraphQL-запросов
-  - **Axe**: Проверка доступности
-
-- **Command Line Debugging Tools**:
-
-  - **Lighthouse CLI**: Автоматизированный аудит веб-страниц
-  - **WebPageTest**: Тестирование производительности из разных локаций
-  - **Puppeteer**: Автоматизация и отладка через Headless Chrome
-  - **Cypress**: End-to-end тестирование с визуальной отладкой
-  - **Playwright**: Кросс-браузерная автоматизация и отладка
-
-- **Мониторинг в production**:
-  - **Error Tracking**: Sentry, LogRocket, TrackJS
-  - **Real User Monitoring (RUM)**: New Relic, Datadog
-  - **Synthetic Monitoring**: Pingdom, Uptime Robot
-  - **Analytics**: Google Analytics, Yandex.Metrica
-  - **Custom Error Handlers**: `window.onerror`, `unhandledrejection`
-
-### Особенности DevTools в различных браузерах
-
-- **Chrome DevTools**:
-
-  - Наиболее полный набор инструментов
-  - Регулярные обновления с новыми возможностями
-  - Протокол Chrome DevTools Protocol для расширений
-  - Мощные возможности JavaScript-профилирования
-
-- **Firefox Developer Tools**:
-
-  - Инспектор Flexbox и Grid
-  - Отладчик с продвинутым анализом прототипов
-  - Shapes Editor для CSS-фигур
-  - Inspector для работы с анимациями
-  - Уникальный CSS-отладчик
-
-- **Safari Web Inspector**:
-
-  - Отладка iOS Safari и WebKit
-  - Таймлайн с детализацией рендеринга
-  - Энергопотребление и анализ батареи
-  - Оптимизирован для отладки на устройствах Apple
-
-- **Edge DevTools**:
-  - Основан на Chromium, схож с Chrome DevTools
-  - Интеграция с VS Code
-  - Unique 3D View для анализа Z-Index
-  - Оптимизация для отладки PWA в Windows
-
 ## Современные API и технологии
 
 ### Как работают веб-воркеры?
@@ -2029,446 +2017,55 @@ Critical Rendering Path (CRP, Критический путь рендеринг
   - Ограничения в мобильных браузерах
   - Потенциальное удаление данных браузером при нехватке места
 
-## Современные Web API
+#### IndexedDB: краткое резюме для собеседования
 
-### Геолокация и определение положения
+**Определение**: IndexedDB — это низкоуровневое API для хранения больших объемов структурированных данных в браузере, предназначенное для создания приложений с богатыми возможностями работы в офлайн-режиме.
 
-- **Geolocation API**:
+**Ключевые особенности**:
 
-  - Получение географического положения пользователя
-  - ```javascript
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        console.log(`Широта: ${latitude}, Долгота: ${longitude}`);
-      },
-      (error) => console.error("Ошибка геолокации:", error.message),
-      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-    );
-    ```
-  - Методы для наблюдения за изменением положения:
-    ```javascript
-    const watchId = navigator.geolocation.watchPosition(
-      successCallback,
-      errorCallback
-    );
-    navigator.geolocation.clearWatch(watchId); // для прекращения наблюдения
-    ```
-  - Ограничения: требует разрешения пользователя, работает только по HTTPS
+- Асинхронный API, не блокирующий основной поток JavaScript
+- Объектно-ориентированная база данных (не реляционная SQL)
+- Транзакционная модель для обеспечения целостности данных
+- Значительно больший объем хранения по сравнению с localStorage (обычно сотни МБ)
+- Хранение различных типов данных: объекты JavaScript, файлы, блобы
 
-- **Device Orientation API**:
-  - Доступ к данным с гироскопа и акселерометра
-  - ```javascript
-    window.addEventListener("deviceorientation", (event) => {
-      const { alpha, beta, gamma } = event;
-      // alpha: поворот вокруг оси Z (0-360)
-      // beta: наклон вперед/назад (-180 до 180)
-      // gamma: наклон влево/вправо (-90 до 90)
-    });
-    ```
-  - Применение: игры, интерактивные интерфейсы, навигация
+**Основные компоненты**:
 
-### Clipboard API
+- **База данных**: контейнер для хранилищ объектов
+- **Object Stores**: коллекции записей, аналог таблиц
+- **Indexes**: структуры для быстрого поиска
+- **Transactions**: группы операций, выполняемых атомарно
+- **Cursors**: итераторы для обхода наборов данных
 
-- **Современный асинхронный API для работы с буфером обмена**:
+**Базовый паттерн использования**:
 
-  - Чтение из буфера обмена:
-    ```javascript
-    navigator.clipboard
-      .readText()
-      .then((text) => console.log("Из буфера:", text))
-      .catch((err) => console.error("Ошибка:", err));
-    ```
-  - Запись в буфер обмена:
-    ```javascript
-    navigator.clipboard
-      .writeText("Текст для копирования")
-      .then(() => console.log("Скопировано!"))
-      .catch((err) => console.error("Ошибка:", err));
-    ```
-  - Работа с несколькими форматами и бинарными данными:
-    ```javascript
-    const imageItem = new ClipboardItem({
-      "image/png": blob,
-    });
-    navigator.clipboard.write([imageItem]);
-    ```
+1. Открыть соединение с базой данных
+2. Создать хранилища объектов и индексы в обработчике `onupgradeneeded`
+3. Выполнять операции чтения/записи в рамках транзакций
+4. Обрабатывать результаты через события (callback-функции)
 
-- **Требования безопасности**:
-  - Для `readText()` требуется разрешение пользователя
-  - Работает только на страницах, открытых по HTTPS
-  - В некоторых браузерах работает только при активной вкладке
+**Преимущества перед другими хранилищами**:
 
-### Web Share API
+- Больший объем хранения, чем localStorage/cookies
+- Поддержка сложных структур данных
+- Не влияет на производительность благодаря асинхронной работе
+- Надежность благодаря транзакциям
+- Возможность создания полноценных офлайн-приложений
 
-- **Нативный способ поделиться контентом через системные механизмы**:
+**Типичные сценарии использования**:
 
-  ```javascript
-  navigator
-    .share({
-      title: "Отличная статья",
-      text: "Проверьте эту важную информацию",
-      url: "https://example.com/article",
-    })
-    .then(() => console.log("Успешно поделились"))
-    .catch((error) => console.log("Ошибка:", error));
-  ```
+- Офлайн-режим в веб-приложениях
+- Кеширование данных для ускорения работы
+- Хранение пользовательских настроек и состояния приложения
+- Буферизация данных перед отправкой на сервер
+- Работа с большими наборами данных
 
-- **Web Share Target API**: позволяет веб-приложениям выступать в качестве цели для операции "поделиться"
+**Ограничения**:
 
-  - Настройка в manifest.json:
-    ```json
-    {
-      "share_target": {
-        "action": "/share-target",
-        "method": "GET",
-        "params": {
-          "title": "title",
-          "text": "text",
-          "url": "url"
-        }
-      }
-    }
-    ```
-
-- **Ограничения**:
-  - Может быть вызван только в ответ на действие пользователя (клик)
-  - Поддерживается не во всех браузерах (преимущественно мобильные)
-  - Требует HTTPS
-
-### File System Access API
-
-- **Прямой доступ к файловой системе пользователя**:
-
-  - Открытие файлов для чтения:
-    ```javascript
-    const [fileHandle] = await window.showOpenFilePicker();
-    const file = await fileHandle.getFile();
-    const content = await file.text();
-    ```
-  - Сохранение файлов:
-    ```javascript
-    const fileHandle = await window.showSaveFilePicker({
-      suggestedName: "my-file.txt",
-      types: [
-        {
-          description: "Text Files",
-          accept: { "text/plain": [".txt"] },
-        },
-      ],
-    });
-    const writable = await fileHandle.createWritable();
-    await writable.write("Содержимое файла");
-    await writable.close();
-    ```
-  - Доступ к директориям:
-    ```javascript
-    const dirHandle = await window.showDirectoryPicker();
-    for await (const entry of dirHandle.values()) {
-      console.log(entry.kind, entry.name);
-    }
-    ```
-
-- **Безопасность**:
-  - Требует явных пользовательских действий
-  - Предоставляет доступ только к выбранным файлам/папкам
-  - Можно запросить "постоянное разрешение" для повторного доступа
-
-### Screen Capture API
-
-- **Захват экрана или отдельных окон**:
-
-  ```javascript
-  async function startCapture() {
-    try {
-      const stream = await navigator.mediaDevices.getDisplayMedia({
-        video: {
-          cursor: "always",
-        },
-        audio: false,
-      });
-
-      videoElement.srcObject = stream;
-    } catch (err) {
-      console.error("Ошибка: " + err);
-    }
-  }
-  ```
-
-- **Применение**:
-  - Скринкасты и обучающие видео
-  - Видеоконференции с демонстрацией экрана
-  - Удаленная техподдержка
-  - Захват скриншотов из потока:
-    ```javascript
-    const videoTrack = stream.getVideoTracks()[0];
-    const imageCapture = new ImageCapture(videoTrack);
-    const bitmap = await imageCapture.grabFrame();
-    const canvas = document.createElement("canvas");
-    canvas.width = bitmap.width;
-    canvas.height = bitmap.height;
-    const context = canvas.getContext("2d");
-    context.drawImage(bitmap, 0, 0);
-    ```
-
-### Payment Request API
-
-- **Упрощение процесса оплаты в веб-приложениях**:
-
-  ```javascript
-  const paymentRequest = new PaymentRequest(
-    [
-      {
-        supportedMethods: "basic-card",
-        data: {
-          supportedNetworks: ["visa", "mastercard"],
-          supportedTypes: ["debit", "credit"],
-        },
-      },
-    ],
-    {
-      total: {
-        label: "Общая сумма",
-        amount: { currency: "RUB", value: "1000.00" },
-      },
-    }
-  );
-
-  try {
-    const paymentResponse = await paymentRequest.show();
-    // Обработка платежа на сервере
-    await paymentResponse.complete("success");
-  } catch (err) {
-    console.error("Ошибка оплаты:", err);
-  }
-  ```
-
-- **Преимущества**:
-  - Унифицированный интерфейс оплаты
-  - Хранение платежной информации в браузере
-  - Поддержка различных способов оплаты
-  - Снижение количества ошибок при вводе данных
-
-### Drag and Drop API
-
-- **Нативный механизм перетаскивания элементов**:
-
-  - Настройка перетаскиваемого элемента:
-
-    ```javascript
-    element.setAttribute("draggable", "true");
-    element.addEventListener("dragstart", (event) => {
-      event.dataTransfer.setData("text/plain", event.target.id);
-      event.dataTransfer.effectAllowed = "move";
-    });
-    ```
-
-  - Настройка целевой области:
-
-    ```javascript
-    dropzone.addEventListener("dragover", (event) => {
-      event.preventDefault(); // Необходимо для разрешения сброса
-      event.dataTransfer.dropEffect = "move";
-    });
-
-    dropzone.addEventListener("drop", (event) => {
-      event.preventDefault();
-      const id = event.dataTransfer.getData("text/plain");
-      const draggableElement = document.getElementById(id);
-      dropzone.appendChild(draggableElement);
-    });
-    ```
-
-  - События жизненного цикла drag-and-drop:
-    - `dragstart`: начало перетаскивания
-    - `drag`: процесс перетаскивания
-    - `dragenter`: вход в целевую область
-    - `dragover`: перемещение над целевой областью
-    - `dragleave`: выход из целевой области
-    - `drop`: сброс элемента
-    - `dragend`: завершение операции перетаскивания
-
-- **Расширенные возможности**:
-
-  - Перетаскивание файлов с компьютера пользователя:
-
-    ```javascript
-    dropzone.addEventListener("drop", (event) => {
-      event.preventDefault();
-
-      if (event.dataTransfer.items) {
-        for (const item of event.dataTransfer.items) {
-          if (item.kind === "file") {
-            const file = item.getAsFile();
-            console.log(`Файл ${file.name}, размер ${file.size}`);
-          }
-        }
-      }
-    });
-    ```
-
-  - Drag-and-drop API можно комбинировать с File System Access API для мощных интерфейсов
-
-### Notifications API
-
-- **Отображение системных уведомлений пользователю**:
-
-  ```javascript
-  // Запрос разрешения (должен быть вызван по событию пользователя)
-  Notification.requestPermission().then((permission) => {
-    if (permission === "granted") {
-      // Создание уведомления
-      const notification = new Notification("Новое сообщение", {
-        body: "Вы получили новое сообщение от пользователя",
-        icon: "/path/to/icon.png",
-        badge: "/path/to/badge.png",
-        vibrate: [200, 100, 200],
-      });
-
-      // Обработка кликов
-      notification.onclick = () => {
-        window.focus();
-        notification.close();
-      };
-    }
-  });
-  ```
-
-- **Интеграция с Service Worker**:
-
-  ```javascript
-  self.registration.showNotification("Фоновое уведомление", {
-    body: "Это уведомление отправлено через Service Worker",
-    icon: "/icon.png",
-    actions: [
-      { action: "view", title: "Просмотр" },
-      { action: "close", title: "Закрыть" },
-    ],
-  });
-
-  self.addEventListener("notificationclick", (event) => {
-    if (event.action === "view") {
-      clients.openWindow("/messages");
-    }
-    event.notification.close();
-  });
-  ```
-
-### Web Bluetooth, USB и Serial API
-
-- **Web Bluetooth API**: взаимодействие с Bluetooth-устройствами
-
-  ```javascript
-  navigator.bluetooth
-    .requestDevice({
-      filters: [{ services: ["battery_service"] }],
-    })
-    .then((device) => device.gatt.connect())
-    .then((server) => server.getPrimaryService("battery_service"))
-    .then((service) => service.getCharacteristic("battery_level"))
-    .then((characteristic) => characteristic.readValue())
-    .then((value) => {
-      const batteryLevel = value.getUint8(0);
-      console.log(`Уровень заряда: ${batteryLevel}%`);
-    })
-    .catch((error) => console.log(`Ошибка: ${error}`));
-  ```
-
-- **Web USB API**: доступ к USB-устройствам
-
-  ```javascript
-  navigator.usb
-    .requestDevice({ filters: [{ vendorId: 0x1234 }] })
-    .then((device) => {
-      console.log(device.productName);
-      return device.open();
-    })
-    .then((device) => device.selectConfiguration(1))
-    .then((device) => device.claimInterface(0))
-    .then((device) => device.transferOut(1, data));
-  ```
-
-- **Web Serial API**: коммуникация с устройствами через последовательный порт
-  ```javascript
-  navigator.serial
-    .requestPort()
-    .then((port) => port.open({ baudRate: 9600 }))
-    .then((port) => {
-      const writer = port.writable.getWriter();
-      const data = new Uint8Array([104, 101, 108, 108, 111]); // "hello"
-      return writer.write(data);
-    });
-  ```
-
-### Другие важные Web API
-
-- **Web Audio API**: обработка и синтез звука
-
-  ```javascript
-  const audioContext = new AudioContext();
-  const oscillator = audioContext.createOscillator();
-  oscillator.type = "sine";
-  oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // Нота A
-  oscillator.connect(audioContext.destination);
-  oscillator.start();
-  setTimeout(() => oscillator.stop(), 2000); // Звук на 2 секунды
-  ```
-
-- **Web Speech API**: распознавание и синтез речи
-
-  ```javascript
-  // Синтез речи
-  const speech = new SpeechSynthesisUtterance("Привет, как дела?");
-  speech.lang = "ru-RU";
-  speechSynthesis.speak(speech);
-
-  // Распознавание речи
-  const recognition = new SpeechRecognition();
-  recognition.lang = "ru-RU";
-  recognition.start();
-  recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    console.log(`Распознано: ${transcript}`);
-  };
-  ```
-
-- **Credential Management API**: управление учетными данными
-
-  ```javascript
-  // Сохранение учетных данных
-  navigator.credentials.store(
-    new PasswordCredential({
-      id: "user@example.com",
-      password: "strong-password",
-      name: "John Doe",
-    })
-  );
-
-  // Автоматический вход
-  navigator.credentials.get({ password: true }).then((cred) => {
-    if (cred) {
-      // Выполнить вход с использованием cred.id и cred.password
-    }
-  });
-  ```
-
-- **Media Session API**: управление медиа в системе
-
-  ```javascript
-  navigator.mediaSession.metadata = new MediaMetadata({
-    title: "Название трека",
-    artist: "Исполнитель",
-    album: "Альбом",
-    artwork: [{ src: "album-art.png", sizes: "256x256", type: "image/png" }],
-  });
-
-  navigator.mediaSession.setActionHandler("play", () => {
-    audio.play();
-  });
-  navigator.mediaSession.setActionHandler("pause", () => {
-    audio.pause();
-  });
-  ```
+- Сложнее в использовании, чем localStorage
+- Разный уровень поддержки в старых браузерах
+- Подвержен очистке при нехватке места на устройстве
+- Ограничен Same-Origin Policy
 
 ## Кросс-браузерность
 
